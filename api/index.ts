@@ -1,5 +1,7 @@
 require('dotenv').config()
 
+
+// @ts-ignore
 import express from 'express'
 import {initRoutes} from "./router";
 
@@ -13,7 +15,7 @@ export const start = async () => {
 
 const listenServer = () => {
     app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`);
+        console.log(`API listening on http://localhost:${port}`);
     })
 };
 

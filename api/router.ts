@@ -15,7 +15,9 @@ export const initRoutes = async (app: Application) => {
                 const route = await import((`./routes/${fileName}`));
                 const routeName = fileName.split('.')[0];
 
-                app.use(routeName, route)
+                app.use(`/${routeName}`, route['default'])
+
+                console.log(route['default'])
             }
         }
     } catch (err) {
