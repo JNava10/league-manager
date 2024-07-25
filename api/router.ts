@@ -8,7 +8,6 @@ export const initRoutes = async (app: Application) => {
 
     try {
         if (fs.existsSync(folderName)) {
-            console.log('b')
             const files = fs.readdirSync(folderName).filter((file: string) => file.endsWith(fileSuffix));
 
             for (const fileName of files) {
