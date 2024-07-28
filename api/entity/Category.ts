@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 @Entity()
-export class League {
+export class Category {
 
     @PrimaryGeneratedColumn()
     id: number

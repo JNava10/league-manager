@@ -8,7 +8,7 @@ export const userSeedList: UserData[] = [
         secondLastname: "Ruiz",
     },
     {
-        nickname: "lucho69",
+        nickname: "luchofranco20",
         name: "Lucho",
         lastname: "Franco",
         secondLastname: "Putero",

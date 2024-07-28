@@ -1,5 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, BeforeInsert} from "typeorm"
-import {hashPassword} from "../utils/common.utils";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, BeforeInsert, OneToMany, ManyToOne} from "typeorm"
 
 @Entity()
 export class User {
@@ -9,6 +8,9 @@ export class User {
 
     @Column()
     nickname: string
+
+    @Column()
+    email: string
 
     @Column()
     name: string
@@ -24,12 +26,4 @@ export class User {
 
     @CreateDateColumn()
     joinedAt: Date
-
-    @BeforeInsert() hashPassword = async () => {
-        console.log(this.password)
-
-        if (this.password) return;
-
-        this.password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);
-    };
 }

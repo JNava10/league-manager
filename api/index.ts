@@ -7,7 +7,6 @@ config()
 import * as express from "express";
 import {initRoutes} from "./router";
 
-
 const app = express()
 const port = process.env.PORT || 3000;
 
