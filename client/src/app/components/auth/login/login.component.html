@@ -1,15 +1,30 @@
-<form
-  class="b-form">
-<!--  [formGroup]="testForm"-->
+<label class="inline-flex items-center me-5 cursor-pointer">
+  <input type="checkbox" value="" class="sr-only peer" checked>
+  <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-red-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-900 peer-checked:bg-gray-600"></div>
+  <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Red</span>
+</label>
 
-  <p>
-    <tui-input
-      formControlName="text">
-      Email/Nickname
-      <input
-        inputmode="numeric"
-        tuiTextfield
-      />
-    </tui-input>
-  </p>
-</form>
+<section class="px-11 py-6 w-full max-w-lg mx-auto h-screen flex gap-5 flex-col items-center justify-center">
+
+  <h1 class="mb-4 text-xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+    Login
+  </h1>
+
+  <form [formGroup]="loginForm" class="border-indigo-200 border-2 flex w-full flex-col gap-4 bg-gray-200 rounded-3xl dark:bg-gray-700 p-11">
+    <div class="mb-5">
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email/Nick</label>
+      <input formControlName="password" type="password" class="bg-gray-50 outline-none border border-gray-300 focus:border-indigo-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-200 dark:border-gray-700 ">
+    </div>
+
+    <div class="mb-5">
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
+      <input formControlName="password" type="password" class="bg-gray-50 outline-none border border-gray-300 focus:border-indigo-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-200 dark:border-gray-700 ">
+    </div>
+
+    <button type="button" class="text-white bg-indigo-300 hover:bg-indigo-400 focus:ring-2 focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-blue-800">
+      Iniciar sesión
+    </button>
+
+  </form>
+</section>
+
