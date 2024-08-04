@@ -16,7 +16,7 @@ export class UserService {
         user.lastname = lastname;
         user.nickname = nickname;
         user.name = name;
-        user.secondLastname = secondLastname; // Modificado para usar el campo correcto
+        user.secondLastname = secondLastname;
         user.password = password;
 
         return await AppDataSource.manager.save(user);

@@ -1,5 +1,6 @@
 import {AppDataSource} from "./data-source";
 import {config} from "dotenv";
+import * as cors from "cors"
 
 config()
 
@@ -11,6 +12,7 @@ const app = express()
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors())
 
 AppDataSource.initialize().then(async () => {
     await initRoutes(app);
