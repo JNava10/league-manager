@@ -65,7 +65,7 @@ export class LoginComponent {
     if (nickOrEmail && nickOrEmail.includes("@")) {
       data.email = nickOrEmail!;
     } else {
-      data.username = nickOrEmail!;
+      data.nickname = nickOrEmail!;
     }
 
     this.authService.login(data)

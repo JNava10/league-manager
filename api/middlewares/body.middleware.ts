@@ -6,5 +6,5 @@ export const checkBodyFields = (req: Request, res: Response, next: NextFunction)
 
     if (result.isEmpty()) next();
 
-    return res.status(400).json(`Invalid request body. (${result.mapped()})`);
+    return res.status(400).json(`Invalid request body. (${result.mapped().toString()})`);
 }

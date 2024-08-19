@@ -9,10 +9,10 @@ const userQuery = new UserService();
 
 export const login = async (req: Request, res: Response) => {
     try {
-        const {username, email, password} = req.body as LoginData;
+        const {nickname, email, password} = req.body as LoginData;
         let user: User
 
-        if (username && !email) user = await userQuery.getUserByNickname(username);
+        if (nickname && !email) user = await userQuery.getUserByNickname(nickname);
         else if (email) user = await userQuery.getUserByEmail(email);
 
         if (!user) return res.send('Invalid credentials.');
