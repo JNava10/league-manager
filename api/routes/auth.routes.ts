@@ -5,15 +5,19 @@ import {body} from "express-validator";
 import {checkBodyFields} from "../middlewares/body.middleware";
 import {match} from "node:assert";
 import {regexList} from "../utils/constants/regex.constants";
-import {isCustomEmail, isNick} from "../utils/validators.utils";
+import {identifierExists, isCustomEmail, isNick} from "../utils/validators.utils";
 
 const router = express.Router();
 
 router.post("/login", [
-    body('email').
-        custom(isCustomEmail).withMessage('Invalid email'),
-    body('nickname').
-        custom(isNick).withMessage('Invalid nickname'),
+    body()
+        .custom(identifierExists).withMessage('An email or nickname are needed'),
+    body('email')
+        .custom(isCustomEmail).withMessage('Invalid email')
+        .optional(),
+    body('nickname')
+        .custom(isNick).withMessage('Invalid nickname')
+        .optional(),
     body('password')
         .exists().withMessage('Password is required')
         .matches(regexList.password).withMessage('Invalid password'),

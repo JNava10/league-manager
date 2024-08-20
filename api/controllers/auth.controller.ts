@@ -12,7 +12,7 @@ export const login = async (req: Request, res: Response) => {
         const {nickname, email, password} = req.body as LoginData;
         let user: User
 
-        if (nickname && !email) user = await userQuery.getUserByNickname(nickname);
+        if (nickname) user = await userQuery.getUserByNickname(nickname);
         else if (email) user = await userQuery.getUserByEmail(email);
 
         if (!user) return res.send('Invalid credentials.');

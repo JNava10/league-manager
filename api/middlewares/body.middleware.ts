@@ -6,5 +6,13 @@ export const checkBodyFields = (req: Request, res: Response, next: NextFunction)
 
     if (result.isEmpty()) next();
 
-    return res.status(400).json(`Invalid request body. (${result.mapped().toString()})`);
+    const errors = Object.values(result.mapped());
+    let errorMsg = "";
+
+    for (const i in errors) {
+        if (Number(i) == errors.length - 1) errorMsg += `${errors[i].msg}.`;
+        else errorMsg += `${errors[i].msg}, `;
+    }
+
+    if (errors.length > 0) return res.status(400).json(`Invalid request body. (${errorMsg})`);
 }
