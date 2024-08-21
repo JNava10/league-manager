@@ -11,7 +11,7 @@ import {Button} from "primeng/button";
 import {ModeSwitchComponent} from "../../utils/mode-switch/mode-switch.component";
 import {CustomValidators} from "../../../utils/custom.validators";
 import {NgIf} from "@angular/common";
-import {AuthService} from "../../../services/auth.service";
+import {AuthApiService} from "../../../services/api/auth-api.service";
 import {LoggedData, LoginData} from "../../../utils/interfaces/auth.interface";
 import {GlobalHelper} from "../../../helpers/global.helper";
 
@@ -39,7 +39,7 @@ import {GlobalHelper} from "../../../helpers/global.helper";
 })
 export class LoginComponent {
   constructor(
-    private authService: AuthService,
+    private authService: AuthApiService,
     private globalHelper: GlobalHelper,
   ) {}
 

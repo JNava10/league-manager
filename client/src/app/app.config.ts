@@ -4,8 +4,9 @@ import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } fr
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {provideHttpClient} from "@angular/common/http";
+import {provideHttpClient, withInterceptors} from "@angular/common/http";
+import {authInterceptor} from "./helpers/interceptor/auth.interceptor";
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideAnimations(), provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), importProvidersFrom(TuiRootModule), provideHttpClient()]
+  providers: [provideAnimations(), provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), importProvidersFrom(TuiRootModule), provideHttpClient(withInterceptors([authInterceptor]))]
 };

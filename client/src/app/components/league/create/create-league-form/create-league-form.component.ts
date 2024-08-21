@@ -3,6 +3,13 @@ import {DropdownModule} from "primeng/dropdown";
 import {InputTextModule} from "primeng/inputtext";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
+import {LeagueApiService} from "../../../../services/api/league-api.service";
+import {League} from "../../../../utils/interfaces/league.interface";
+import {ResError} from "../../../../utils/interfaces/response.interface";
+import {MessageService} from "primeng/api";
+import {GlobalHelper} from "../../../../helpers/global.helper";
+import {catchError, of} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-create-league-form',
@@ -18,10 +25,11 @@ import {NgIf} from "@angular/common";
   styleUrl: './create-league-form.component.css'
 })
 export class CreateLeagueFormComponent {
+  constructor(private leagueApiService: LeagueApiService, private messageService: MessageService, private globalHelper: GlobalHelper) {}
+
   createLeagueForm = new FormGroup({
     name: new FormControl(''),
     description: new FormControl(''),
-    category: new FormControl(''),
   });
 
   get name() {
@@ -39,8 +47,15 @@ export class CreateLeagueFormComponent {
   createLeague = () => {
     if (this.createLeagueForm.invalid) return;
 
-    const data = this.createLeagueForm.value;
+    const data = this.createLeagueForm.value as League;
 
+    this.leagueApiService.createLeague(data).subscribe({
+      next: (data ) => this.afterCreatingLeague(data),
+      error: (error) => this.globalHelper.handleRequestDefaultError(error, this.messageService)
+    })
+  }
 
+  private afterCreatingLeague = (data: League) => {
+    console.log('a')
   }
 }

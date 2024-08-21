@@ -1,1 +1,1 @@
-export const sendTokenParam = {token: true}
+export const sendTokenParam = {sendToken: true}

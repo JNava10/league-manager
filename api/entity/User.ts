@@ -1,4 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, BeforeInsert, OneToMany, ManyToOne} from "typeorm"
+import {League} from "./League";
 
 @Entity()
 export class User {
@@ -26,4 +27,7 @@ export class User {
 
     @CreateDateColumn()
     joinedAt: Date
+
+    @OneToMany(() => League, (league) => league.author)
+    leagues: League[]
 }

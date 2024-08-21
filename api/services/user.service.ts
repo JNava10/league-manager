@@ -8,7 +8,7 @@ export class UserService {
 
     private userRepository = AppDataSource.getRepository(User)
 
-    createUser = async ({ name, lastname, secondLastname, password, nickname }: UserData) => {
+    static createUser = async ({ name, lastname, secondLastname, password, nickname }: UserData) => {
         if (!password) password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);
 
         const user = new User();

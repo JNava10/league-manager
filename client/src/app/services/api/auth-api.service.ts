@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {LoggedData, LoginData} from "../utils/interfaces/auth.interface";
-import {environment} from "../../environments/environment.development";
+import {LoggedData, LoginData} from "../../utils/interfaces/auth.interface";
+import {environment} from "../../../environments/environment.development";
 import {catchError, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthApiService {
   constructor(private http: HttpClient) { }
 
   login = (loginData: LoginData) => {

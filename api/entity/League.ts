@@ -19,6 +19,6 @@ export class League {
     @Column()
     category: number
 
-    @ManyToOne(() => League, league => league.id)
-    author: number
+    @ManyToOne(() => User, user => user.id)
+    author: User
 }
