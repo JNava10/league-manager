@@ -2,10 +2,8 @@ import { User } from "../entity/User";
 import { UserData } from "../interfaces/user.interface";
 import { AppDataSource } from "../data-source";
 import { hashPassword } from "../utils/common.utils";
-import { LoginData } from "../interfaces/login.interface";
 
 export class UserService {
-
     private userRepository = AppDataSource.getRepository(User)
 
     static createUser = async ({ name, lastname, secondLastname, password, nickname }: UserData) => {

@@ -1,18 +1,16 @@
-import {NextFunction, Request, Response} from "express";
-import {validationResult} from "express-validator";
+import {NextFunction, Response} from "express";
+import {verifyToken} from "../utils/auth.utils";
+import {AccessPayload} from "../interfaces/login.interface";
+import {CustomRequest} from "../interfaces/express.interface";
 
-export const hasToken = (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.;
+export const validateToken = (req: CustomRequest, res: Response, next: NextFunction) => {
+    const token = req.cookies;
 
-    if (result.isEmpty()) next();
+    if (!token) return res.status(403).json("No token provided.");
 
-    const errors = Object.values(result.mapped());
-    let errorMsg = "";
+    req.user = verifyToken(token) as AccessPayload;
 
-    for (const i in errors) {
-        if (Number(i) == errors.length - 1) errorMsg += `${errors[i].msg}.`;
-        else errorMsg += `${errors[i].msg}, `;
-    }
+    if (!req.user) return res.status(403).json("Token is not valid.");
 
-    if (errors.length > 0) return res.status(400).json(`Invalid request body. (${errorMsg})`);
+    next()
 }

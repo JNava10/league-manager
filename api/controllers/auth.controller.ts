@@ -1,30 +1,35 @@
 import {Request, Response} from "express";
-import {LoginData, LoginPayload} from "../interfaces/login.interface";
+import {AccessPayload, LoginData} from "../interfaces/login.interface";
 import {UserService} from "../services/user.service";
 import {User} from "../entity/User";
 import {generateToken} from "../utils/auth.utils";
 import {verifyPassword} from "../utils/common.utils";
 
-const userQuery = new UserService();
+const userService = new UserService();
 
 export const login = async (req: Request, res: Response) => {
     try {
         const {nickname, email, password} = req.body as LoginData;
         let user: User
 
-        if (nickname) user = await userQuery.getUserByNickname(nickname);
-        else if (email) user = await userQuery.getUserByEmail(email);
+        if (nickname) user = await userService.getUserByNickname(nickname);
+        else if (email) user = await userService.getUserByEmail(email);
 
-        if (!user) return res.send('Invalid credentials.');
+        if (!user) return res.status(403).send('Invalid credentials.');
 
-        const validPassword = await verifyPassword(password, user.password)
+        const validPassword = await verifyPassword(password, user.password);
 
-        if (!validPassword) return res.status(403).send("Invalid credentials.")
+        if (!validPassword) return res.status(403).send("Invalid credentials.");
 
-        const payload: LoginPayload = {nickname: user.nickname}
-        const token = await generateToken(payload)
+        const payload: AccessPayload = {nickname: user.nickname, email: user.email, id: user.id};
 
-        const loggedData = {logged: token !== null, token};
+        const token = await generateToken(payload, null);
+
+        // TODO: Generate access and refresh token.
+        // const accessToken = await generateToken(payload, process.env['JWT_ACCESS_EXP_TIME'])
+        // const refreshToken = await generateToken(payload, process.env['JWT_REFRESH_EXP_TIME']);
+
+        const loggedData = {logged: true, token};
 
         res.send(loggedData);
     } catch (error) {

@@ -4,6 +4,12 @@ export interface LoginData {
     password: string
 }
 
-export interface LoginPayload {
-    nickname: string
+export interface AccessPayload {
+    nickname: string,
+    email: string,
+    id: number
+}
+
+export interface RefreshPayload {
+    id: number
 }

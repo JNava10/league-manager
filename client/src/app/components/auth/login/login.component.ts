@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import {TuiInputModule, TuiInputPasswordModule, TuiUnmaskHandlerModule} from "@taiga-ui/kit";
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {TuiButtonModule, TuiHintModule, TuiTextfieldControllerModule} from "@taiga-ui/core";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {DividerModule} from "primeng/divider";
@@ -26,11 +24,6 @@ import {GlobalHelper} from "../../../helpers/global.helper";
     ToggleButtonModule,
     FormsModule,
     Button,
-    TuiInputModule,
-    TuiTextfieldControllerModule,
-    TuiInputPasswordModule,
-    TuiHintModule,
-    TuiButtonModule,
     ModeSwitchComponent,
     NgIf
   ],

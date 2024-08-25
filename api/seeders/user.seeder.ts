@@ -1,7 +1,7 @@
 import {userSeedList} from "../items/user.list";
 import {User} from "../entity/User";
 import {AppDataSource} from "../data-source";
-import {Seeder} from "../abstract/seeder";
+import {Seeder} from "../utils/abstract/seeder";
 import {hashPassword} from "../utils/common.utils";
 
 export class UserSeeder implements Seeder {
