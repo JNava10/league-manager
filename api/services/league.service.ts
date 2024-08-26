@@ -1,24 +1,25 @@
-import { User } from "../entity/User";
-import { UserData } from "../interfaces/user.interface";
-import { AppDataSource } from "../data-source";
-import { hashPassword } from "../utils/common.utils";
-import { LoginData } from "../interfaces/login.interface";
-import {League} from "../entity/League";
-import {LeagueData} from "../interfaces/league.interface";
+import {LeagueData} from "../utils/interfaces/league.interface";
+import {prisma} from "../app";
 
 export class LeagueService {
-
-    private static userRepository = AppDataSource.getRepository(User)
-    private static leagueRepository = AppDataSource.getRepository(League)
-
-    static createLeague = async ({ name, description }: LeagueData, authorId: number) => {
-        const author = await LeagueService.userRepository.findOne({where: {id: authorId}});
-        const league = new League();
-
-        league.name = name;
-        league.description = description;
-        league.author = author;
-
-        return await LeagueService.leagueRepository.save(league);
+    static createLeague = async (league: LeagueData, authorId: number) => {
+        return prisma.league.create({
+            data: {
+                name: league.name,
+                description: league.description,
+                authorId: authorId,
+                category: null
+            }
+        });
     };
+
+    static addMember = (userId: number, leagueId: number) => {
+        const memberAlreadyAdded = prisma.leagueMember.findFirst({where: {userId}});
+
+        if (memberAlreadyAdded) throw new Error("Member already added");
+
+        return prisma.leagueMember.create({
+            data: {leagueId, userId}
+        })
+    }
 }

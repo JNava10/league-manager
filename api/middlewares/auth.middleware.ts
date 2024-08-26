@@ -1,10 +1,10 @@
 import {NextFunction, Response} from "express";
 import {verifyToken} from "../utils/auth.utils";
-import {AccessPayload} from "../interfaces/login.interface";
-import {CustomRequest} from "../interfaces/express.interface";
+import {AccessPayload} from "../utils/interfaces/login.interface";
+import {CustomRequest} from "../utils/interfaces/express.interface";
 
 export const validateToken = (req: CustomRequest, res: Response, next: NextFunction) => {
-    const token = req.cookies;
+    const token = req.headers.token;
 
     if (!token) return res.status(403).json("No token provided.");
 

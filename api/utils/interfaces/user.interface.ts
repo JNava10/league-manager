@@ -6,4 +6,5 @@ export interface UserData {
     secondLastname: string;
     password?: string;
     joinedAt?: Date;
+    email?: string
 }

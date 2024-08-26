@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {UserData} from "../interfaces/user.interface";
+import {UserData} from "../utils/interfaces/user.interface";
 import {UserService} from "../services/user.service";
 
 

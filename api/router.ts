@@ -15,8 +15,6 @@ export const initRoutes = async (app: Application) => {
                 const routeName = fileName.split('.')[0];
 
                 app.use(`/${routeName}`, route['default'])
-
-                if (route) console.log(`Route '${routeName}' loaded.`);
             }
         }
     } catch (err) {

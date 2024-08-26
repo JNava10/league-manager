@@ -1,11 +1,10 @@
 import {Request, Response} from "express";
-import {UserData} from "../interfaces/user.interface";
+import {UserData} from "../utils/interfaces/user.interface";
 import {UserService} from "../services/user.service";
-import {LeagueData} from "../interfaces/league.interface";
+import {LeagueData} from "../utils/interfaces/league.interface";
 import {LeagueService} from "../services/league.service";
-import {CustomRequest} from "../interfaces/express.interface";
-
-const userService = new UserService()
+import {CustomRequest} from "../utils/interfaces/express.interface";
+import {prisma} from "../app";
 
 export const createLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -13,8 +12,11 @@ export const createLeague = async (req: CustomRequest, res: Response) => {
         
         const createdLeague = await LeagueService.createLeague(body, req.user.id);
 
-        res.send(createdLeague);
+        if (!createdLeague) return res.status(500).send("Error while creating league");
+        
+
+        res.status(201).send(createdLeague);
     } catch (error) {
-        console.error(error);
+        res.status(500).send(error);
     }
 }

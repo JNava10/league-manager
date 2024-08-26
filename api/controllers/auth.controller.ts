@@ -1,16 +1,16 @@
 import {Request, Response} from "express";
-import {AccessPayload, LoginData} from "../interfaces/login.interface";
+import {AccessPayload, LoginData} from "../utils/interfaces/login.interface";
 import {UserService} from "../services/user.service";
-import {User} from "../entity/User";
 import {generateToken} from "../utils/auth.utils";
 import {verifyPassword} from "../utils/common.utils";
+import {UserData} from "../utils/interfaces/user.interface";
 
 const userService = new UserService();
 
 export const login = async (req: Request, res: Response) => {
     try {
         const {nickname, email, password} = req.body as LoginData;
-        let user: User
+        let user: UserData
 
         if (nickname) user = await userService.getUserByNickname(nickname);
         else if (email) user = await userService.getUserByEmail(email);
@@ -23,13 +23,13 @@ export const login = async (req: Request, res: Response) => {
 
         const payload: AccessPayload = {nickname: user.nickname, email: user.email, id: user.id};
 
-        const token = await generateToken(payload, null);
+        const token = await generateToken(payload, "2d");
 
         // TODO: Generate access and refresh token.
         // const accessToken = await generateToken(payload, process.env['JWT_ACCESS_EXP_TIME'])
         // const refreshToken = await generateToken(payload, process.env['JWT_REFRESH_EXP_TIME']);
 
-        const loggedData = {logged: true, token};
+        const loggedData = {success: true, token};
 
         res.send(loggedData);
     } catch (error) {

@@ -1,4 +1,4 @@
-import {UserData} from "../interfaces/user.interface";
+import {UserData} from "../utils/interfaces/user.interface";
 
 export const userSeedList: UserData[] = [
     {

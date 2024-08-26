@@ -5,18 +5,19 @@ import {GlobalHelper} from "../global.helper";
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const sendTokenName = Object.keys(sendTokenParam)[0];
-  const tokenParamName = "token"
 
+  if (req.params.has(sendTokenName)) {
 
-  if (req.headers.has(sendTokenName)) {
-    // TODO: Check if token exists.
-
-    const newRequest = req.clone();
     const storageHelper = new StorageHelper();
     const globalHelper = new GlobalHelper(storageHelper);
     const token = globalHelper.getToken();
+    const tokenParamName = 'token';
 
-    newRequest.headers.set(tokenParamName, token!);
+    const newRequest = req.clone({headers: req.headers.set(tokenParamName, token!)});
+
+    // TODO: Check if token exists.
+
+    console.log(newRequest.headers.set(tokenParamName, token!), newRequest.headers.get("token"))
 
     return next(newRequest);
   }

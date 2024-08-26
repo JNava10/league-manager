@@ -51,7 +51,7 @@ export class CreateLeagueFormComponent {
 
     this.leagueApiService.createLeague(data).subscribe({
       next: (data ) => this.afterCreatingLeague(data),
-      error: (error) => this.globalHelper.handleRequestDefaultError(error, this.messageService)
+      error: (error) => this.globalHelper.handleRequestDefaultError(error, this.messageService),
     })
   }
 
