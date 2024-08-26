@@ -1,33 +1,24 @@
 import {userSeedList} from "../items/user.list";
-import {User} from "../entity/User";
-import {AppDataSource} from "../data-source";
 import {Seeder} from "../utils/abstract/seeder";
 import {hashPassword} from "../utils/common.utils";
+import {prisma} from "../app";
 
 export class UserSeeder implements Seeder {
     run = async () => {
-        // Delete existing records
-        await AppDataSource
-            .createQueryBuilder()
-            .delete()
-            .from(User)
-            .execute();
+       try {
+           const users = {...userSeedList};
 
-        const userList = [...userSeedList];
+           for (let i in users) {
+               users[i].password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);
 
-        // Adding hashed password in users
-        for (const user of userList) {
-            user.password = await hashPassword();
-        }
+               // @ts-ignore
+               await prisma.user.create({data: users[i]})
+           }
 
-        console.log(userList)
-
-        // Bulk-inserting records
-        await AppDataSource
-            .createQueryBuilder()
-            .insert()
-            .into(User)
-            .values(userList)
-            .execute();
+       } catch (e) {
+           console.error(e)
+       } finally {
+           await prisma.$disconnect()
+       }
     };
 }

@@ -5,12 +5,12 @@ export const userSeedList: UserData[] = [
         nickname: "cristobal_tr",
         name: "Cristobal",
         lastname: "Tirado",
-        secondLastname: "Ruiz",
+        secondLastname: "Ruiz"
     },
     {
         nickname: "luchofranco20",
         name: "Lucho",
         lastname: "Franco",
-        secondLastname: "Putero",
+        secondLastname: "Putero"
     }
 ];

@@ -5,6 +5,7 @@ import {LeagueData} from "../utils/interfaces/league.interface";
 import {LeagueService} from "../services/league.service";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {prisma} from "../app";
+import {CustomError} from "../utils/classes/error";
 
 export const createLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -12,11 +13,9 @@ export const createLeague = async (req: CustomRequest, res: Response) => {
         
         const createdLeague = await LeagueService.createLeague(body, req.user.id);
 
-        if (!createdLeague) return res.status(500).send("Error while creating league");
-        
-
         res.status(201).send(createdLeague);
-    } catch (error) {
-        res.status(500).send(error);
+    } catch (e) {
+        const error: CustomError = {msg: e.message}
+        res.status(500).send();
     }
 }

@@ -29,6 +29,7 @@ model league {
   createdAt     DateTime             @default(now()) @db.DateTime(6)
   category      Int?
   authorId      Int
+  author        user                 @relation(fields: [authorId], references: [id])
   championships leagueChampionship[]
   members       leagueMember[]
 
@@ -46,6 +47,7 @@ model user {
   email          String?        @db.VarChar(255)
   leagues        leagueMember[]
   entries        sessionEntry[]
+  leaguesCreated league[]
 }
 
 model leagueChampionship {

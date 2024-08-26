@@ -1,14 +1,16 @@
-import {AppDataSource} from "./data-source";
 import {seeders} from "./seeders/database.seeder";
 
 import {config} from "dotenv";
 
 config()
 
-AppDataSource.initialize().then(async () => {
+const run = async () => {
     for (const seeder of seeders) {
         await seeder.run()
     }
+}
 
-    process.exit()
-}).catch(error => console.log(error))
+run().catch((e) => {
+    console.error(e)
+    process.exit(1)
+})
