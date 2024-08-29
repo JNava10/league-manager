@@ -1,0 +1,28 @@
+import {Component, OnInit} from '@angular/core';
+import {Observable} from "rxjs";
+import {League} from "../../../utils/interfaces/league.interface";
+import {LeagueApiService} from "../../../services/api/league-api.service";
+import {AsyncPipe} from "@angular/common";
+import {ListboxModule} from "primeng/listbox";
+import {ActivatedRoute, ParamMap, RouterLink} from "@angular/router";
+
+@Component({
+  selector: 'app-leagues-dashboard',
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ListboxModule,
+    RouterLink
+  ],
+  templateUrl: './leagues-dashboard.component.html',
+  styleUrl: './leagues-dashboard.component.css'
+})
+export class LeaguesDashboardComponent implements OnInit {
+  leagues$!: Observable<League[]>
+
+  constructor(private leagueService: LeagueApiService, protected route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.leagues$ = this.leagueService.getOwnLeagues();
+  }
+}

@@ -66,9 +66,7 @@ export class LoginComponent {
   };
 
   private handleLogin = (loggedData: LoggedData) => {
-    console.log(loggedData)
     if (loggedData.success && loggedData.token) {
-      console.log(loggedData.token)
       this.globalHelper.saveToken(loggedData.token);
     }
   }

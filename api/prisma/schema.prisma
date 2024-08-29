@@ -17,9 +17,9 @@ model category {
 model subcategory {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255)
-  parent      category @relation(fields: [leagueId], references: [id])
+  parentId    Int
   description String   @db.VarChar(255)
-  leagueId    Int
+  parent      category @relation(fields: [parentId], references: [id])
 }
 
 model league {
@@ -37,23 +37,26 @@ model league {
 }
 
 model user {
-  id             Int            @id @default(autoincrement())
-  nickname       String?        @db.VarChar(255)
-  name           String         @db.VarChar(255)
-  lastname       String         @db.VarChar(255)
-  secondLastname String?        @db.VarChar(255)
-  password       String         @db.VarChar(255)
-  createdAt      DateTime       @default(now()) @db.DateTime(6)
-  email          String?        @db.VarChar(255)
-  leagues        leagueMember[]
-  entries        sessionEntry[]
-  leaguesCreated league[]
+  id                   Int                  @id @default(autoincrement())
+  nickname             String?              @db.VarChar(255)
+  name                 String               @db.VarChar(255)
+  lastname             String               @db.VarChar(255)
+  secondLastname       String?              @db.VarChar(255)
+  password             String               @db.VarChar(255)
+  createdAt            DateTime             @default(now()) @db.DateTime(6)
+  email                String?              @db.VarChar(255)
+  leagues              leagueMember[]
+  entries              sessionEntry[]
+  leaguesCreated       league[]
+  championshipsCreated leagueChampionship[]
 }
 
 model leagueChampionship {
   id          Int                 @id @default(autoincrement())
   leagueId    Int
   name        String              @db.VarChar(255)
+  authorId    Int
+  author      user                @relation(fields: [authorId], references: [id])
   description String              @db.VarChar(255)
   createdAt   DateTime            @default(now()) @db.DateTime(6)
   league      league              @relation(fields: [leagueId], references: [id])
@@ -119,19 +122,19 @@ model leagueMember {
 }
 
 model track {
-  id          Int            @id @default(autoincrement())
-  name        String         @db.VarChar(255)
-  description String         @db.VarChar(255)
-  country     String         @db.VarChar(3)
-  location    String         @db.VarChar(255)
-  layouts     trackLayouts[]
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(255)
+  description String        @db.VarChar(255)
+  country     String        @db.VarChar(3)
+  location    String        @db.VarChar(255)
+  layouts     trackLayout[]
   session     session[]
 }
 
-model trackLayouts {
+model trackLayout {
   id          Int    @id @default(autoincrement())
   name        String @db.VarChar(255)
   description String @db.VarChar(255)
-  parent      track  @relation(fields: [trackId], references: [id])
-  trackId     Int
+  parent      track  @relation(fields: [parentId], references: [id])
+  parentId    Int
 }

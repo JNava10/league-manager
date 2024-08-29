@@ -6,5 +6,7 @@ import {validateToken} from "../middlewares/auth.middleware";
 const router = express.Router();
 
 router.post("/", [validateToken], controller.createLeague);
+router.get("/owned", [validateToken], controller.getOwnLeagues);
+router.get("/:id", [validateToken], controller.getLeague);
 
 export default router;

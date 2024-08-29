@@ -22,16 +22,26 @@ export class LeagueService {
     };
 
     static addMember = async (userId: number, leagueId: number) => {
-        console.log(userId)
-
         const memberAlreadyAdded = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
 
         if (memberAlreadyAdded) throw new Error("Member already added");
 
-        
-
         return prisma.leagueMember.create({
             data: {leagueId, userId}
         })
+    }
+
+    static getLeagueById = async (leagueId: number) => {
+        return prisma.league.findFirst({where: {id: leagueId}});
+    }
+
+    static getUserLeagues = (authorId: number) => {
+        return prisma.league.findMany({where: {authorId}});
+    }
+
+    static getPublicLeagues = async () => {
+        return prisma.league.findMany();
+        // TODO: Find leagues where private is false
+        // TODO: Pagination
     }
 }

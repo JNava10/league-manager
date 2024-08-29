@@ -17,4 +17,12 @@ export class LeagueApiService {
   createLeague = (league: League) => {
     return this.http.post<League>(`${environment.apiEndpoint}/league`, league, {params: {...sendTokenParam}})
   }
+
+  getOwnLeagues = () => {
+    return this.http.get<League[]>(`${environment.apiEndpoint}/league/owned`, {params: {...sendTokenParam}})
+  }
+
+  getLeague = (id: number) => {
+    return this.http.get<League>(`${environment.apiEndpoint}/league/${id}`, {params: {...sendTokenParam}})
+  }
 }
