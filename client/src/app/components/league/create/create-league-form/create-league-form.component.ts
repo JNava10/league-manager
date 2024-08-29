@@ -5,11 +5,8 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular
 import {NgIf} from "@angular/common";
 import {LeagueApiService} from "../../../../services/api/league-api.service";
 import {League} from "../../../../utils/interfaces/league.interface";
-import {ResError} from "../../../../utils/interfaces/response.interface";
 import {MessageService} from "primeng/api";
 import {GlobalHelper} from "../../../../helpers/global.helper";
-import {catchError, of} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-create-league-form',

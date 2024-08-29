@@ -100,16 +100,35 @@ model raceSession {
   session  session[]
 }
 
-model pointSystem {
-  id          Int    @id @default(autoincrement())
-  name        String @db.VarChar(255)
-  description String @db.VarChar(255)
+model scoreSystem {
+  id            Int                   @id @default(autoincrement())
+  name          String                @db.VarChar(255)
+  description   String                @db.VarChar(255)
+  positionScore scoreSystemPosition[]
+  extraScore    scoreSystemExtra[]
 }
 
-model pointSystemPositions {
-  id    Int    @id @default(autoincrement())
-  key   String @db.VarChar(255) // This can be position, fastest lap, pole or whatever.
-  value String @db.VarChar(255)
+model scoreSystemPosition {
+  id       Int         @id @default(autoincrement())
+  parent   scoreSystem @relation(fields: [parentId], references: [id])
+  position String      @db.VarChar(255)
+  score    String      @db.VarChar(255)
+  parentId Int
+}
+
+model extraScore {
+  id               Int                @id @default(autoincrement())
+  name             String
+  scoreSystemExtra scoreSystemExtra[]
+}
+
+model scoreSystemExtra {
+  id       Int         @id @default(autoincrement())
+  extraId  Int
+  score    String      @db.VarChar(255)
+  parentId Int
+  parent   scoreSystem @relation(fields: [parentId], references: [id])
+  extra    extraScore  @relation(fields: [extraId], references: [id])
 }
 
 model leagueMember {
