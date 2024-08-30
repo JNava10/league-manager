@@ -4,6 +4,7 @@ import {CreateLeagueFormComponent} from "./components/league/create/create-leagu
 import {LeaguesDashboardComponent} from "./components/league/leagues-dashboard/leagues-dashboard.component";
 import {LeagueMainComponent} from "./components/league/league-main/league-main.component";
 import {LeagueOverviewComponent} from "./components/league/league-overview/league-overview.component";
+import {CreateChampionshipComponent} from "./components/championship/create-championship/create-championship.component";
 
 export const routes: Routes = [
 
@@ -11,9 +12,10 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'new-league', component: CreateLeagueFormComponent },
       { path: 'leagues', component: LeaguesDashboardComponent },
-      {path: 'league', children: [
+      { path: 'league', children: [
           { path: ':leagueId', component: LeagueMainComponent, children: [
-              { component: LeagueOverviewComponent, path: '' }
+              { component: LeagueOverviewComponent, path: '' },
+              { component: CreateChampionshipComponent, path: 'create-championship' }
             ]
           }
         ]

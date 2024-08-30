@@ -17,7 +17,7 @@ import {AsyncPipe} from "@angular/common";
 })
 export class LeagueOverviewComponent implements OnInit {
   league$!: Observable<League>;
-  leagueId?: number
+  leagueId?: number;
 
   constructor(private leagueService: LeagueApiService, private router: ActivatedRoute) {}
 
