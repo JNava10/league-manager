@@ -5,6 +5,7 @@ import {LeagueApiService} from "../../../services/api/league-api.service";
 import {AsyncPipe} from "@angular/common";
 import {ListboxModule} from "primeng/listbox";
 import {ActivatedRoute, ParamMap, RouterLink} from "@angular/router";
+import {TableModule} from "primeng/table";
 
 @Component({
   selector: 'app-leagues-dashboard',
@@ -12,7 +13,8 @@ import {ActivatedRoute, ParamMap, RouterLink} from "@angular/router";
   imports: [
     AsyncPipe,
     ListboxModule,
-    RouterLink
+    RouterLink,
+    TableModule
   ],
   templateUrl: './leagues-dashboard.component.html',
   styleUrl: './leagues-dashboard.component.css'

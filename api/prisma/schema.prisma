@@ -67,8 +67,8 @@ model championshipRound {
   id             Int                @id @default(autoincrement())
   championshipId Int
   trackId        Int
-  name           String             @db.VarChar(255)
-  description    String             @db.VarChar(255)
+  name           String?            @db.VarChar(255)
+  description    String?            @db.VarChar(255)
   createdAt      DateTime           @default(now()) @db.DateTime(6)
   championship   leagueChampionship @relation(fields: [championshipId], references: [id])
 }

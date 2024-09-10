@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AsyncPipe, NgIf} from "@angular/common";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {Championship} from "../../../utils/interfaces/championship.interface";
+import {ChampionshipCreation} from "../../../utils/interfaces/championship.interface";
 import {ChampionshipApiService} from "../../../services/api/championship-api.service";
 import {ActivatedRoute} from "@angular/router";
 import {Observable} from "rxjs";
@@ -34,21 +34,21 @@ export class CreateChampionshipComponent implements OnInit {
     private categoryService: CategoryApiService,
     private scoreService: ScoreApiService,
     private trackService: TrackApiService,
-    private router: ActivatedRoute
+    private route: ActivatedRoute
   )  {}
 
-  leagueId?: number;
+  @Input() leagueId?: number;
 
   tracks$!: Observable<Track[]>;
   categories$!: Observable<Category[]>;
   scoreSystems$!: Observable<ScoreSystem[]>;
 
   ngOnInit() {
-    this.router.paramMap.subscribe(params => {
-      const id = params.get("leagueId");
-      this.leagueId = Number(id) ?? null;
-    })
+    // leagueId
+    this.leagueId = this.route.snapshot.params['leagueId'];
+    console.log(this.leagueId)
 
+      // Obtenemos todos los elegibles necesarios para los desplegables
     this.tracks$ = this.trackService.getAllTracks();
     this.categories$ = this.categoryService.getAllCategories();
     this.scoreSystems$ = this.scoreService.getAllScoreSystems();
@@ -75,7 +75,9 @@ export class CreateChampionshipComponent implements OnInit {
   createChampionship = () => {
     if (this.createChampionshipForm.invalid) return;
 
-    const championship = this.createChampionshipForm.value as Championship;
+    const championship = this.createChampionshipForm.value as ChampionshipCreation;
+
+    championship.leagueId = this.leagueId!
 
     championship.calendarIds = Array.from(this.raceCalendar.values()).map(track => track.id!);
 

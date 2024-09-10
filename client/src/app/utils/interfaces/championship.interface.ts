@@ -1,10 +1,11 @@
 import {Track} from "./track.interface";
 
-export interface Championship {
+export interface ChampionshipCreation {
   id?: number,
   name: string,
   description?: string
   categoryId?: number
   scoreSystemId?: number,
   calendarIds?: number[]
+  leagueId: number
 }

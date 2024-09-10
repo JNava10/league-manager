@@ -7,15 +7,15 @@ import {CustomRequest} from "../utils/interfaces/express.interface";
 import {prisma} from "../app";
 import {CustomError} from "../utils/classes/error";
 import {ChampionshipService} from "../services/championship.service";
-import {ChampionshipData} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData} from "../utils/interfaces/championship.interface";
 
 export const createChampionship = async (req: CustomRequest, res: Response) => {
     try {
-        const body = req.body as ChampionshipData;
+        const body = req.body as ChampionshipCreation;
         
-        const createdLeague = await ChampionshipService.createChampionship(body, req.user.id);
+        const createdChampioship = await ChampionshipService.createChampionship(body, req.user.id);
 
-        res.status(201).send(createdLeague);
+        res.status(201).send(createdChampioship);
     } catch (e) {
         const error: CustomError = {msg: e.message}
         res.status(500).send(error);

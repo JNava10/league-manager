@@ -23,10 +23,9 @@ export class LeagueMainComponent implements OnInit {
   constructor(private leagueService: LeagueApiService, private router: ActivatedRoute) {}
 
   ngOnInit() {
-    this.router.paramMap.subscribe(params => {
-      const id = params.get("leagueId");
-      this.leagueId = Number(id) ?? null;
-    })
+    const id = this.router.snapshot.params['leagueId'];
+
+    this.leagueId = Number(id) ?? null;
 
     if (this.leagueId) {
       this.league$ = this.leagueService.getLeague(this.leagueId)

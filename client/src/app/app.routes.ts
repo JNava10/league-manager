@@ -12,12 +12,9 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'new-league', component: CreateLeagueFormComponent },
       { path: 'leagues', component: LeaguesDashboardComponent },
-      { path: 'league', children: [
-          { path: ':leagueId', component: LeagueMainComponent, children: [
-              { component: LeagueOverviewComponent, path: '' },
-              { component: CreateChampionshipComponent, path: 'create-championship' }
-            ]
-          }
+      { path: 'league/:leagueId', children: [
+          { component: LeagueOverviewComponent, path: '' },
+          { component: CreateChampionshipComponent, path: 'create-championship' },
         ]
       },
     ]
