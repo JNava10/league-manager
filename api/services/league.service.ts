@@ -3,22 +3,18 @@ import {prisma} from "../app";
 
 export class LeagueService {
     static createLeague = async (league: LeagueData, authorId: number) => {
-        try {
-            const createdLeague = await prisma.league.create({
-                data: {
-                    name: league.name,
-                    description: league.description,
-                    authorId: authorId,
-                    category: null
-                }
-            });
+        const createdLeague = await prisma.league.create({
+            data: {
+                name: league.name,
+                description: league.description,
+                authorId: authorId,
+                category: null
+            }
+        });
 
-            await LeagueService.addMember(authorId, createdLeague.id);
+        await LeagueService.addMember(authorId, createdLeague.id);
 
-            return createdLeague;
-        } catch (e) {
-            console.error(e.message);
-        }
+        return createdLeague;
     };
 
     static addMember = async (userId: number, leagueId: number) => {
@@ -26,9 +22,13 @@ export class LeagueService {
 
         if (memberAlreadyAdded) throw new Error("Member already added");
 
-        return prisma.leagueMember.create({
+        const isAdded = await prisma.leagueMember.create({
             data: {leagueId, userId}
-        })
+        }) !== null;
+
+        if (!isAdded) throw new Error("Error while adding the member.")
+
+        return isAdded;
     }
 
     static getLeagueById = async (leagueId: number) => {
@@ -37,6 +37,46 @@ export class LeagueService {
 
     static getUserLeagues = (authorId: number) => {
         return prisma.league.findMany({where: {authorId}});
+    }
+
+    static getLeagueMembers = async (leagueId: number) => {
+        const leagueExists = await prisma.league.findFirst({where: {id: leagueId}}) !== null;
+        
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`)
+
+        return prisma.leagueMember.findMany({where: {leagueId}, include: {user: true}});
+    }
+
+    static searchNotMembers = async (leagueId: number, search: string) => {
+        const leagueExists = await prisma.league.findFirst({where: {id: leagueId}}) !== null;
+        
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
+
+        // @ts-ignore
+        const leagueMembers = (await prisma.leagueMember.findMany({where: {leagueId}, select: {userId: true}})).map(item => item.userId);
+
+        return prisma.user.findMany(
+            {
+                where: {
+                    id: {notIn: leagueMembers}, 
+                    OR: [
+                        {nickname: {contains: search}},
+                        {name: {contains: search}},
+                        {lastname: {contains: search}},
+                    ]
+                }
+            }
+        );
+    }
+
+    static userAlreadyMember = async (userId: number, leagueId: number) => {
+        const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
+        const userExists = await prisma.user.findUnique({where: {id: leagueId}}) !== null;
+        
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`)
+        if (!userExists) throw new Error(`El usuario con ID ${leagueId} no existe.`)
+
+        return prisma.leagueMember.findFirst({where: {leagueId, userId}}) !== null;
     }
 
     static getPublicLeagues = async () => {

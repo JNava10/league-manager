@@ -4,3 +4,12 @@ export interface LeagueData {
     description?: string;
     joinedAt?: Date;
 }
+
+export interface NewLeagueMember {
+    userId: number;
+}
+
+export interface IsMemberAdded {
+    executed: boolean,
+    msg: string
+  }

@@ -1,6 +1,6 @@
-import {UserData} from "../utils/interfaces/user.interface";
+import {User} from "../utils/interfaces/user.interface";
 
-export const userSeedList: UserData[] = [
+export const userSeedList: User[] = [
     {
         nickname: "cristobal_tr",
         name: "Cristobal",

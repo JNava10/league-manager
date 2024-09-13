@@ -25,6 +25,10 @@ export class GlobalHelper {
     messageService.add({severity: 'error', summary: title, detail: message});
   }
 
+  showSuccessMessage = (title: string, message: string, messageService: MessageService) => {
+    messageService.add({severity: 'success', summary: title, detail: message});
+  }
+
   handleRequestDefaultError = (error: any, messageService: MessageService) => {
     this.showErrorMessage(`${error.status}`, error.statusText, messageService);
   }

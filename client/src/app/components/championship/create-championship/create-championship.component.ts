@@ -44,9 +44,7 @@ export class CreateChampionshipComponent implements OnInit {
   scoreSystems$!: Observable<ScoreSystem[]>;
 
   ngOnInit() {
-    // leagueId
     this.leagueId = this.route.snapshot.params['leagueId'];
-    console.log(this.leagueId)
 
       // Obtenemos todos los elegibles necesarios para los desplegables
     this.tracks$ = this.trackService.getAllTracks();

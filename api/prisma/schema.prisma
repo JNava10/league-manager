@@ -7,36 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model category {
+model Category {
   id            Int           @id @default(autoincrement())
   name          String        @db.VarChar(255)
   description   String        @db.VarChar(255)
-  subcategories subcategory[]
+  subcategories Subcategory[]
 }
 
-model subcategory {
+model Subcategory {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255)
   parentId    Int
   description String   @db.VarChar(255)
-  parent      category @relation(fields: [parentId], references: [id])
+  parent      Category @relation(fields: [parentId], references: [id])
 }
 
-model league {
+model League {
   id            Int                  @id @default(autoincrement())
   name          String               @db.VarChar(255)
   description   String               @db.VarChar(255)
   createdAt     DateTime             @default(now()) @db.DateTime(6)
   category      Int?
   authorId      Int
-  author        user                 @relation(fields: [authorId], references: [id])
-  championships leagueChampionship[]
-  members       leagueMember[]
+  author        User                 @relation(fields: [authorId], references: [id])
+  championships LeagueChampionship[]
+  members       LeagueMember[]
 
   @@index([authorId], map: "FK_c1008f689c9f2d4bef8618dee2b")
 }
 
-model user {
+model User {
   id                   Int                  @id @default(autoincrement())
   nickname             String?              @db.VarChar(255)
   name                 String               @db.VarChar(255)
@@ -45,115 +45,152 @@ model user {
   password             String               @db.VarChar(255)
   createdAt            DateTime             @default(now()) @db.DateTime(6)
   email                String?              @db.VarChar(255)
-  leagues              leagueMember[]
-  entries              sessionEntry[]
-  leaguesCreated       league[]
-  championshipsCreated leagueChampionship[]
+  leagues              LeagueMember[]
+  entries              SessionEntry[]
+  leaguesCreated       League[]
+  championshipsCreated LeagueChampionship[]
+  championshipsJoined   ChampionshipEntry[]
+  appRoles UserRole[]
+  leagueRoles LeagueMemberRole[]
 }
 
-model leagueChampionship {
+model UserRole {
+  userId Int
+  roleId Int
+  role          AppRole            @relation(fields: [roleId], references: [id])
+  user          User               @relation(fields: [userId], references: [id])
+
+  @@id([roleId, userId])
+}
+
+model AppRole {
+    id                   Int                  @id @default(autoincrement())
+    name String
+
+    users UserRole[]
+}
+
+model LeagueMemberRole {
+  id                   Int                  @id @default(autoincrement())
+  name                 String
+  users User[]
+}
+
+model LeagueChampionship {
   id          Int                 @id @default(autoincrement())
   leagueId    Int
   name        String              @db.VarChar(255)
   authorId    Int
-  author      user                @relation(fields: [authorId], references: [id])
+  author      User                @relation(fields: [authorId], references: [id])
   description String              @db.VarChar(255)
   createdAt   DateTime            @default(now()) @db.DateTime(6)
-  league      league              @relation(fields: [leagueId], references: [id])
-  rounds      championshipRound[]
+  league      League              @relation(fields: [leagueId], references: [id])
+  rounds      ChampionshipRound[]
+  entries      ChampionshipEntry[]
 }
 
-model championshipRound {
+model ChampionshipRound {
   id             Int                @id @default(autoincrement())
   championshipId Int
   trackId        Int
   name           String?            @db.VarChar(255)
   description    String?            @db.VarChar(255)
   createdAt      DateTime           @default(now()) @db.DateTime(6)
-  championship   leagueChampionship @relation(fields: [championshipId], references: [id])
+  championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
 }
 
-model session {
+model ChampionshipEntry {
+  id             Int                @id @default(autoincrement())
+  championshipId Int
+  userId         Int
+  name           String?            @db.VarChar(255)
+  description    String?            @db.VarChar(255)
+  createdAt      DateTime           @default(now()) @db.DateTime(6)
+  championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
+  user          User               @relation(fields: [userId], references: [id])
+}
+
+model Session {
   id            Int            @id @default(autoincrement())
   trackId       Int
   createdAt     DateTime       @default(now()) @db.DateTime(6)
-  track         track          @relation(fields: [trackId], references: [id])
-  sessionEntry  sessionEntry[]
-  raceSession   raceSession?   @relation(fields: [raceSessionId], references: [id])
+  track         Track          @relation(fields: [trackId], references: [id])
+  sessionEntry  SessionEntry[]
+  raceSession   RaceSession?   @relation(fields: [raceSessionId], references: [id])
   raceSessionId Int?
 }
 
-model sessionEntry {
-  id            Int     @id @default(autoincrement())
-  sessionId     Int     @unique
-  session       session @relation(fields: [sessionId], references: [id])
+model SessionEntry {
+  driverId      Int    
+  sessionId     Int    
   position      Int
-  driver        user    @relation(fields: [driverId], references: [id])
-  driverId      Int
-  lapsCompleted Int
+  driver        User    @relation(fields: [driverId], references: [id])
+  session       Session @relation(fields: [sessionId], references: [id])
+  @@id([driverId, sessionId])
 }
 
-model raceSession {
+model RaceSession {
   id       Int       @id @default(autoincrement())
   laps     Int?
-  duration Int // Minutes
-  session  session[]
+  duration Int? // Minutes
+  session  Session[]
 }
 
-model scoreSystem {
+model ScoreSystem {
   id            Int                   @id @default(autoincrement())
   name          String                @db.VarChar(255)
   description   String                @db.VarChar(255)
-  positionScore scoreSystemPosition[]
-  extraScore    scoreSystemExtra[]
+  positionScore ScoreSystemPosition[]
+  extraScore    ScoreSystemExtra[]
 }
 
-model scoreSystemPosition {
+model ScoreSystemPosition {
   id       Int         @id @default(autoincrement())
-  parent   scoreSystem @relation(fields: [parentId], references: [id])
+  parent   ScoreSystem @relation(fields: [parentId], references: [id])
   position String      @db.VarChar(255)
   score    String      @db.VarChar(255)
   parentId Int
 }
 
-model extraScore {
+model ExtraScore {
   id               Int                @id @default(autoincrement())
   name             String
-  scoreSystemExtra scoreSystemExtra[]
+  scoreSystemExtra ScoreSystemExtra[]
 }
 
-model scoreSystemExtra {
+model ScoreSystemExtra {
   id       Int         @id @default(autoincrement())
   extraId  Int
   score    String      @db.VarChar(255)
   parentId Int
-  parent   scoreSystem @relation(fields: [parentId], references: [id])
-  extra    extraScore  @relation(fields: [extraId], references: [id])
+  parent   ScoreSystem @relation(fields: [parentId], references: [id])
+  extra    ExtraScore  @relation(fields: [extraId], references: [id])
 }
 
-model leagueMember {
+model LeagueMember {
   id       Int @id @default(autoincrement())
   leagueId Int
   userId   Int
+  accepted Boolean @default(false)
 
-  league league @relation(fields: [leagueId], references: [id])
-  user   user   @relation(fields: [userId], references: [id])
+  league League @relation(fields: [leagueId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 }
 
-model track {
+model Track {
   id          Int           @id @default(autoincrement())
   name        String        @db.VarChar(255)
   description String        @db.VarChar(255)
   country     String        @db.VarChar(3)
   location    String        @db.VarChar(255)
-  layouts     trackLayout[]
-  session     session[]
+  layouts     TrackLayout[]
+  session     Session[]
 }
 
-model trackLayout {
+model TrackLayout {
   id          Int    @id @default(autoincrement())
   name        String @db.VarChar(255)
   description String @db.VarChar(255)
-  parent      track  @relation(fields: [parentId], references: [id])
+  parent      Track  @relation(fields: [parentId], references: [id])
   parentId    Int
 }

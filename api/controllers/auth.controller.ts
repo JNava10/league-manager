@@ -3,14 +3,14 @@ import {AccessPayload, LoginData} from "../utils/interfaces/login.interface";
 import {UserService} from "../services/user.service";
 import {generateToken} from "../utils/auth.utils";
 import {verifyPassword} from "../utils/common.utils";
-import {UserData} from "../utils/interfaces/user.interface";
+import {User} from "../utils/interfaces/user.interface";
 
 const userService = new UserService();
 
 export const login = async (req: Request, res: Response) => {
     try {
         const {nickname, email, password} = req.body as LoginData;
-        let user: UserData
+        let user: User
 
         if (nickname) user = await userService.getUserByNickname(nickname);
         else if (email) user = await userService.getUserByEmail(email);

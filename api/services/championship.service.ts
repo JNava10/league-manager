@@ -9,7 +9,7 @@ export class ChampionshipService {
                     name: championship.name,
                     description: championship.description,
                     authorId,
-                    leagueId: championship.leagueId
+                    leagueId: Number(championship.leagueId)
                 }
             }) as ChampionshipData;
 

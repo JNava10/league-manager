@@ -1,10 +1,10 @@
-import { UserData } from "../utils/interfaces/user.interface";
+import { User } from "../utils/interfaces/user.interface";
 import { hashPassword } from "../utils/common.utils";
 import {prisma} from "../app";
 
 export class UserService {
 
-    static createUser = async ({ name, lastname, secondLastname, password, nickname }: UserData) => {
+    static createUser = async ({ name, lastname, secondLastname, password, nickname }: User) => {
         try {
             if (!password) password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);
 
