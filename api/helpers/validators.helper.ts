@@ -1,5 +1,7 @@
-import {regexList} from "./constants/regex.constants";
+import {regexList} from "../utils/constants/regex.constants";
 import {Request} from "express";
+
+// Custom validators de express-validator //
 
 export const isCustomEmail = (value: string) => {
     if (!regexList.email.test(value)) throw new Error();
@@ -20,4 +22,12 @@ export const identifierExists = (value: string, {req}) => {
 
     return true;
 
+}
+
+// Validators personalizados //
+
+export const isValidNumber = (value: string) => {
+    const number = Number(value);
+
+    return number !== null && !isNaN(number) && value.length > 0;
 }

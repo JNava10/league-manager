@@ -1,5 +1,5 @@
 import {NextFunction, Response} from "express";
-import {verifyToken} from "../utils/auth.utils";
+import {verifyToken} from "../helpers/auth.helper";
 import {AccessPayload} from "../utils/interfaces/login.interface";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 

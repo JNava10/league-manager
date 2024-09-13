@@ -1,18 +1,19 @@
 import {Request, Response} from "express";
-import {IsMemberAdded, LeagueData, NewLeagueMember} from "../utils/interfaces/league.interface";
+import {IsMemberAdded as IsQueryExecuted, KickMember, LeagueData, NewLeagueMember} from "../utils/interfaces/league.interface";
 import {LeagueService} from "../services/league.service";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
+import { isValidNumber } from "../helpers/validators.helper";
 
 export const getLeague = async (req: CustomRequest, res: Response) => {
     try {
+        const validId = isValidNumber(req.params['id']);
+
+        if (!validId) {
+            return res.send(`No se ha indicado un ID de liga valido.`);
+        };
+        
         const leagueId = Number(req.params['id']);
-
-        if (!leagueId) {
-            const leagues = await LeagueService.getPublicLeagues()
-            return res.status(200).send(leagues);
-        }
-
         const league = await LeagueService.getLeagueById(leagueId);
 
         return res.status(200).send(league);
@@ -50,16 +51,18 @@ export const addMemberToLeague = async (req: CustomRequest, res: Response) => {
     try {
         // const userAlreadyInLeague = LeagueService.userAlreadyMember()
 
-        const leagueId = Number(req.params['id']);
         const {userId} = req.body as NewLeagueMember;
+        const validId = isValidNumber(req.params['id']);
 
-        if (!leagueId || isNaN(leagueId)) {
+        if (!validId) {
             return res.send(`No se ha indicado un ID de liga valido.`);
-        }
+        };
+        
+        const leagueId = Number(req.params['id']);
         
         const executed = await LeagueService.addMember(userId, leagueId);
 
-        const data: IsMemberAdded = {
+        const data: IsQueryExecuted = {
             executed,
             msg: "Se ha añadido correctamente el miembro a la liga." 
         }
@@ -75,12 +78,13 @@ export const addMemberToLeague = async (req: CustomRequest, res: Response) => {
 
 export const getLeagueMembers = async (req: CustomRequest, res: Response) => {
     try {
-        const leagueId = Number(req.params['id']);
+        const validId = isValidNumber(req.params['id']);
 
-        if (!leagueId || isNaN(leagueId)) {
-            return res.send(`No se ha indicado un ID de liga valido.`)
+        if (!validId) {
+            return res.send(`No se ha indicado un ID de liga valido.`);
         };
         
+        const leagueId = Number(req.params['id']);
         const leagueMembers = await LeagueService.getLeagueMembers(leagueId);
 
         return res.status(200).send(leagueMembers);
@@ -93,16 +97,36 @@ export const getLeagueMembers = async (req: CustomRequest, res: Response) => {
 
 export const searchNotMembers = async (req: CustomRequest, res: Response) => {
     try {
-        const leagueId = Number(req.params['id']);
-        const searchedUsers = String(req.query['search']);
+        const validId = isValidNumber(req.params['id']);
 
-        if (!leagueId || isNaN(leagueId)) {
+        if (!validId) {
             return res.send(`No se ha indicado un ID de liga valido.`);
         };
         
+        const leagueId = Number(req.params['id']);
+        const searchedUsers = String(req.query['search']);
         const leagueMembers = await LeagueService.searchNotMembers(leagueId, searchedUsers);
 
         return res.status(200).send(leagueMembers);
+    } catch (e) {
+        console.log(e);
+        
+        return res.status(500).send(e.message);
+    }
+}
+
+export const kickMember = async (req: CustomRequest, res: Response) => {
+    try {
+        const userId = Number(req.params['userId']);
+        const leagueId = Number(req.params['leagueId']);
+        const executed = await LeagueService.kickMember(userId, leagueId);
+
+        const data: IsQueryExecuted = {
+            executed,
+            msg: "Se ha eliminado de la liga al miembro correctamente." 
+        }
+
+        return res.status(200).send(data);
     } catch (e) {
         console.log(e);
         

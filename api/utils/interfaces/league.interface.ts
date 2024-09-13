@@ -12,4 +12,9 @@ export interface NewLeagueMember {
 export interface IsMemberAdded {
     executed: boolean,
     msg: string
-  }
+}
+
+export interface KickMember {
+    userId: number
+}
+  

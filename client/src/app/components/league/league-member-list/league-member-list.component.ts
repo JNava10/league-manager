@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { LeagueApiService } from '../../../services/api/league-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { IsMemberAdded, LeagueMember, NewMemberData } from '../../../utils/interfaces/league.interface';
+import { QueryIsExecuted, LeagueMember, ApiMemberFilter } from '../../../utils/interfaces/league.interface';
 import { TableModule } from 'primeng/table';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { User } from '../../../utils/interfaces/user.interface';
@@ -17,7 +17,7 @@ import { MessagesModule } from 'primeng/messages';
 @Component({
   selector: 'app-league-member-list',
   standalone: true,
-  imports: [TableModule, AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule ],
+  imports: [TableModule, AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe],
   templateUrl: './league-member-list.component.html',
   styleUrl: './league-member-list.component.css'
 })
@@ -64,21 +64,33 @@ export class LeagueMemberListComponent implements OnInit {
   selectUser = ($event: ListboxClickEvent) => {
     const selectedUser = $event.option as User;
 
-    const newMemberData: NewMemberData = {
+    const newMemberData: ApiMemberFilter = {
       leagueId: this.leagueId!,
       userId: selectedUser.id!
     }
 
-    this.leagueService.addMemberToLeague(newMemberData).subscribe((isMemberAdded: IsMemberAdded) => {
-      this.handleAddingMember(isMemberAdded)
-    });
+    this.leagueService.addMember(newMemberData).subscribe(this.handleAddingMember);
   }
 
-  handleAddingMember = (memberIsAdded: IsMemberAdded) => {
+  handleAddingMember = (memberIsAdded: QueryIsExecuted) => {
     this.globalHelper.showSuccessMessage("Exito", memberIsAdded.message, this.messageService);
 
     this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
+  }
 
+  kickMember = (userId: number) => {
+    const newMemberData: ApiMemberFilter = {
+      leagueId: this.leagueId!,
+      userId
+    }
+
+    this.leagueService.kickMember(newMemberData).subscribe(this.handleAddingMember);
+  }
+
+  handleKickingMember = (memberIsAdded: QueryIsExecuted) => {
+    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.message, this.messageService);
+
+    this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
   }
 }
 

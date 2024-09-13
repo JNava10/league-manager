@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment.development";
-import {IsMemberAdded, League, LeagueMember, NewMemberData} from "../../utils/interfaces/league.interface";
+import {QueryIsExecuted, League, LeagueMember, ApiMemberFilter} from "../../utils/interfaces/league.interface";
 import {sendTokenParam} from "../../utils/constants/global.constants";
 import { User } from '../../utils/interfaces/user.interface';
 
@@ -16,8 +16,12 @@ export class LeagueApiService {
     return this.http.post<League>(`${environment.apiEndpoint}/league`, league, {params: {...sendTokenParam}})
   }
 
-  addMemberToLeague = (newMemberData: NewMemberData) => {
-    return this.http.post<IsMemberAdded>(`${environment.apiEndpoint}/league/${newMemberData.leagueId}/member`, newMemberData, {params: {...sendTokenParam}})
+  addMember = (newMemberData: ApiMemberFilter) => {
+    return this.http.post<QueryIsExecuted>(`${environment.apiEndpoint}/league/${newMemberData.leagueId}/member`, newMemberData, {params: {...sendTokenParam}})
+  }
+
+  kickMember = ({leagueId, userId}: ApiMemberFilter) => {
+    return this.http.delete<QueryIsExecuted>(`${environment.apiEndpoint}/league/${leagueId}/member/${userId}`, {params: {...sendTokenParam}});
   }
 
   getOwnLeagues = () => {

@@ -5,7 +5,7 @@ import {body} from "express-validator";
 import {checkBodyFields} from "../middlewares/body.middleware";
 import {match} from "node:assert";
 import {regexList} from "../utils/constants/regex.constants";
-import {identifierExists, isCustomEmail, isNick} from "../utils/validators.utils";
+import {identifierExists, isCustomEmail, isNick} from "../helpers/validators.helper";
 
 const router = express.Router();
 

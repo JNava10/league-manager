@@ -168,13 +168,15 @@ model ScoreSystemExtra {
 }
 
 model LeagueMember {
-  id       Int @id @default(autoincrement())
   leagueId Int
   userId   Int
   accepted Boolean @default(false)
+  joinedAt            DateTime?             @db.DateTime(6)
 
   league League @relation(fields: [leagueId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
+
+  @@id(name: "memberKeys", [leagueId, userId])
 }
 
 model Track {

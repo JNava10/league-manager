@@ -22,24 +22,35 @@
     <p-table [value]="($members | async)!" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="id">ID</th>
                 <th pSortableColumn="name">Nombre</th>
+                <th pSortableColumn="name">Fecha de unión</th>
                 <th></th>
-
             </tr>
-
         </ng-template>
         <ng-template pTemplate="body" let-member>
             <tr>
-                <td>{{member.user.id}}</td>
                 <td>{{member.user.nickname}}</td>
+                <td>{{member.joinedAt | date}}</td>
                 <td>
+                  <div class="flex gap-2">
+                    <!-- Botón para kickear al miembro -->
+                    <p-button
+                      icon="fa-solid fa-xmark"
+                      styleClass="bg-red-500 focus:ring-2 focus:ring-red-300 border-none"
+                      rounded="true"
+                      outlined="false"
+                      (onClick)="kickMember(member.user.id)"
+                    />
+
+                    <!-- Botón para banear permanentemente al miembro -->
                     <p-button
                         icon="fa-solid fa-ban"
                         styleClass="bg-red-500 focus:ring-2 focus:ring-red-300 border-none"
                         rounded="true"
                         outlined="false"
-                        />
+                      />
+                  </div>
+
                 </td>
             </tr>
         </ng-template>

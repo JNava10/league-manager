@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
 import {AccessPayload, LoginData} from "../utils/interfaces/login.interface";
 import {UserService} from "../services/user.service";
-import {generateToken} from "../utils/auth.utils";
-import {verifyPassword} from "../utils/common.utils";
+import {generateToken} from "../helpers/auth.helper";
+import {verifyPassword} from "../helpers/common.helper";
 import {User} from "../utils/interfaces/user.interface";
 
 const userService = new UserService();

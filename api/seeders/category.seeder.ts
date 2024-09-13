@@ -1,6 +1,6 @@
 import {userSeedList} from "../items/user.list";
 import {Seeder} from "../utils/abstract/seeder";
-import {hashPassword} from "../utils/common.utils";
+import {hashPassword} from "../helpers/common.helper";
 import {prisma} from "../app";
 import {categorySeed} from "../items/category.list";
 

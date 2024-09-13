@@ -8,6 +8,7 @@ export interface League {
 
 export interface LeagueMember {
   user: User
+  joinedAt: Date
 }
 
 export interface LeagueRole {
@@ -15,12 +16,14 @@ export interface LeagueRole {
   name: string
 }
 
-export interface NewMemberData {
+export interface ApiMemberFilter {
   userId: number,
   leagueId: number
 }
 
-export interface IsMemberAdded {
+export interface QueryIsExecuted {
   executed: boolean,
   message: string
 }
+
+

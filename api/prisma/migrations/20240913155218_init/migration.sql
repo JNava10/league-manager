@@ -171,12 +171,12 @@ CREATE TABLE `ScoreSystemExtra` (
 
 -- CreateTable
 CREATE TABLE `LeagueMember` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `leagueId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
     `accepted` BOOLEAN NOT NULL DEFAULT false,
+    `joinedAt` DATETIME(6) NULL,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`leagueId`, `userId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable

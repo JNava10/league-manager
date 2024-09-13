@@ -1,5 +1,5 @@
 import { User } from "../utils/interfaces/user.interface";
-import { hashPassword } from "../utils/common.utils";
+import { hashPassword } from "../helpers/common.helper";
 import {prisma} from "../app";
 
 export class UserService {

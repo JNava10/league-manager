@@ -1,5 +1,7 @@
+import { kickMember } from './../controllers/league.controller';
 import {LeagueData} from "../utils/interfaces/league.interface";
 import {prisma} from "../app";
+import { now } from '../helpers/common.helper';
 
 export class LeagueService {
     static createLeague = async (league: LeagueData, authorId: number) => {
@@ -23,10 +25,35 @@ export class LeagueService {
         if (memberAlreadyAdded) throw new Error("Member already added");
 
         const isAdded = await prisma.leagueMember.create({
-            data: {leagueId, userId}
+            data: {leagueId, userId, accepted: true, joinedAt: now()}
         }) !== null;
 
-        if (!isAdded) throw new Error("Error while adding the member.")
+        if (!isAdded) throw new Error("Error while adding the member.");
+
+        return isAdded;
+    }
+
+    static kickMember = async (userId: number, leagueId: number) => {
+        const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
+        const userIsMember = await prisma.leagueMember.findFirst({where: {leagueId, userId}})  !== null;
+
+        if (!leagueExists) {
+            throw new Error("League not exists.");
+        }
+
+        if (!userIsMember) {
+            throw new Error("User not in league.");
+        }
+
+        const isAdded = await prisma.leagueMember.delete({
+            where: {
+                memberKeys: {userId, leagueId}
+            }
+        } ) !== null;
+
+        if (!isAdded) { 
+            throw new Error("Error while adding the member.")
+        }
 
         return isAdded;
     }

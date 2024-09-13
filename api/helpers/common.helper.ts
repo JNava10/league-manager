@@ -14,3 +14,7 @@ export const verifyPassword = async  (plain: string, hash: string) => {
 export const sendRequestError = async  (message: string, res: Response) => {
     return res.status(500).send({error: message})
 }
+
+export const now = () => {
+    return new Date(Date.now());
+}
