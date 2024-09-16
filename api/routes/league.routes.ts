@@ -14,5 +14,6 @@ router.get("/:id/not-members", [validateToken], controller.searchNotMembers);
 router.post("/:id/member", [validateToken], controller.addMemberToLeague);
 router.post("/:id/member", [validateToken], controller.addMemberToLeague);
 router.delete("/:leagueId/member/:userId", [validateToken], controller.kickMember);
+router.post("/:leagueId/enter", [validateToken], controller.requestToEnterLeague);  
 
 export default router;

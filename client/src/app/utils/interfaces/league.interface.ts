@@ -23,7 +23,5 @@ export interface ApiMemberFilter {
 
 export interface QueryIsExecuted {
   executed: boolean,
-  message: string
+  msg: string
 }
-
-

@@ -43,4 +43,8 @@ export class LeagueApiService {
   searchLeagueByName = (search: string) => {
     return this.http.get<League[]>(`${environment.apiEndpoint}/league/`, {params: {...sendTokenParam, name: search}})
   }
+
+  sendEnterLeagueRequest = (leagueId: number) => {
+    return this.http.post<QueryIsExecuted>(`${environment.apiEndpoint}/league/${leagueId}/enter/`, {}, {params: {...sendTokenParam}})
+  }
 }

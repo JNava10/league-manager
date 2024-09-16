@@ -16,6 +16,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
     // TODO: Check if token exists.
 
+    console.log(token)
+
     return next(newRequest);
   }
 

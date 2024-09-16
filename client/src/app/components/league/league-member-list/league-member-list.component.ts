@@ -73,7 +73,7 @@ export class LeagueMemberListComponent implements OnInit {
   }
 
   handleAddingMember = (memberIsAdded: QueryIsExecuted) => {
-    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.message, this.messageService);
+    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.msg, this.messageService);
 
     this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
   }
@@ -88,7 +88,7 @@ export class LeagueMemberListComponent implements OnInit {
   }
 
   handleKickingMember = (memberIsAdded: QueryIsExecuted) => {
-    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.message, this.messageService);
+    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.msg, this.messageService);
 
     this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
   }

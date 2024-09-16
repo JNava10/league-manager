@@ -23,13 +23,13 @@ export class LeagueService {
     static addMember = async (userId: number, leagueId: number) => {
         const memberAlreadyAdded = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
 
-        if (memberAlreadyAdded) throw new Error("Member already added");
+        if (memberAlreadyAdded) throw new Error("El miembro ya fue añadido anteriormente");
 
         const isAdded = await prisma.leagueMember.create({
             data: {leagueId, userId, accepted: true, joinedAt: now()}
         }) !== null;
 
-        if (!isAdded) throw new Error("Error while adding the member.");
+        if (!isAdded) throw new Error("Error añadiendo el miembro.");
 
         return isAdded;
     }
@@ -39,10 +39,10 @@ export class LeagueService {
         await this.checkIfMemberExists(userId, leagueId)
 
         const isAdded = await prisma.leagueMember.create({
-            data: {leagueId, userId, accepted: false}
+            data: {leagueId, userId, accepted: false, requestedAt: now()}
         }) !== null;
 
-        if (!isAdded) throw new Error("Error while adding the member.");
+        if (!isAdded) throw new Error("Error añadiendo el miembro.");
 
         return isAdded;
     }
@@ -58,7 +58,7 @@ export class LeagueService {
         const userIsMember = await prisma.leagueMember.findFirst({where: {leagueId, userId}})  !== null;
 
         if (!leagueExists) {
-            throw new Error("League not exists.");
+            throw new Error("La liga indicada no existe.");
         }
 
         if (!userIsMember) {
@@ -72,7 +72,7 @@ export class LeagueService {
         } ) !== null;
 
         if (!isAdded) { 
-            throw new Error("Error while adding the member.")
+            throw new Error("Error añadiendo el miembro.")
         }
 
         return isAdded;
@@ -150,7 +150,7 @@ export class LeagueService {
     static checkIfMemberExists = async (userId: number, leagueId: number) => {
         const isAdded = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
 
-        if (isAdded) throw new Error("Member already in league.");
+        if (isAdded) throw new Error("Error añadiendo el miembro.");
 
         return false
     }
