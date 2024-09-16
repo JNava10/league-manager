@@ -6,7 +6,7 @@ import {AsyncPipe} from "@angular/common";
 import {ListboxModule} from "primeng/listbox";
 import {ActivatedRoute, ParamMap, RouterLink} from "@angular/router";
 import {TableModule} from "primeng/table";
-
+import {BrowseLeaguesListComponent} from "../browse-leagues-list/browse-leagues-list.component";
 @Component({
   selector: 'app-leagues-dashboard',
   standalone: true,
@@ -14,7 +14,8 @@ import {TableModule} from "primeng/table";
     AsyncPipe,
     ListboxModule,
     RouterLink,
-    TableModule
+    TableModule,
+    BrowseLeaguesListComponent,
   ],
   templateUrl: './leagues-dashboard.component.html',
   styleUrl: './leagues-dashboard.component.css'

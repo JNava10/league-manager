@@ -33,6 +33,25 @@ export class LeagueService {
         return isAdded;
     }
 
+    
+    static addPendingMember = async (userId: number, leagueId: number) => {
+        await this.checkIfMemberExists(userId, leagueId)
+
+        const isAdded = await prisma.leagueMember.create({
+            data: {leagueId, userId, accepted: false}
+        }) !== null;
+
+        if (!isAdded) throw new Error("Error while adding the member.");
+
+        return isAdded;
+    }
+
+    static getPendingMembers = async (leagueId: number) => {
+        const pendingMembers = await prisma.leagueMember.findMany({where: {leagueId, accepted: false}});
+
+        return pendingMembers;
+    }
+
     static kickMember = async (userId: number, leagueId: number) => {
         const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
         const userIsMember = await prisma.leagueMember.findFirst({where: {leagueId, userId}})  !== null;
@@ -110,5 +129,15 @@ export class LeagueService {
         return prisma.league.findMany();
         // TODO: Find leagues where private is false
         // TODO: Pagination
+    }
+
+    // Validators //
+
+    static checkIfMemberExists = async (userId: number, leagueId: number) => {
+        const isAdded = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
+
+        if (isAdded) throw new Error("Member already in league.");
+
+        return false
     }
 }
