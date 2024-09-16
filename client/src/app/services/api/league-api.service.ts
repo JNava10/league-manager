@@ -39,4 +39,8 @@ export class LeagueApiService {
   searchNotMembers = (leagueId: number, search: string) => {
     return this.http.get<User[]>(`${environment.apiEndpoint}/league/${leagueId}/not-members`, {params: {...sendTokenParam, search}})
   }
+
+  searchLeagueByName = (search: string) => {
+    return this.http.get<League[]>(`${environment.apiEndpoint}/league/`, {params: {...sendTokenParam, name: search}})
+  }
 }

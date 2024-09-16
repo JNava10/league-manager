@@ -27,4 +27,8 @@ export class UserService {
     getUserByNickname = async (nickname: string) => prisma.user.findFirst({where: {nickname}});
 
     getUserByEmail = async (email: string) => prisma.user.findFirst({where: {email}});
+
+    static userIdExists = async (userId: number) => {
+        return prisma.user.findUnique({where: {id: userId}}) !== null;
+    } 
 }

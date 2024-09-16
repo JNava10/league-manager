@@ -2,6 +2,7 @@ import { kickMember } from './../controllers/league.controller';
 import {LeagueData} from "../utils/interfaces/league.interface";
 import {prisma} from "../app";
 import { now } from '../helpers/common.helper';
+import { UserService } from './user.service';
 
 export class LeagueService {
     static createLeague = async (league: LeagueData, authorId: number) => {
@@ -123,6 +124,19 @@ export class LeagueService {
         if (!userExists) throw new Error(`El usuario con ID ${leagueId} no existe.`)
 
         return prisma.leagueMember.findFirst({where: {leagueId, userId}}) !== null;
+    }
+
+    static getLeaguesByName = async (search: string, userId?: number) => {
+        // El ID del usuario (si es un ID existente y se ha pasado a la funcion) ayudará
+        // a recoger info. adicional en las ligas, como si el usuario es miembro de la liga o no. 
+
+        const userExists = userId && await UserService.userIdExists(userId)
+
+        if (userExists) {
+            // TODO: Devolver ligas junto a si el usuario es miembro de cada liga.
+        }
+
+        return prisma.league.findMany({where: {name: {contains: search}}});
     }
 
     static getPublicLeagues = async () => {

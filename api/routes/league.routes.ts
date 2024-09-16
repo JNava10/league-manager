@@ -8,6 +8,7 @@ const router = express.Router();
 router.post("/", [validateToken], controller.createLeague);
 router.get("/owned", [validateToken], controller.getOwnLeagues);
 router.get("/:id", [validateToken], controller.getLeague);
+router.get("/", [validateToken], controller.searchLeagues);
 router.get("/:id/members", [validateToken], controller.getLeagueMembers);
 router.get("/:id/not-members", [validateToken], controller.searchNotMembers);
 router.post("/:id/member", [validateToken], controller.addMemberToLeague);

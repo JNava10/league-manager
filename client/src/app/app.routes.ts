@@ -11,7 +11,7 @@ export const routes: Routes = [
   { path: 'lm', children: [
       { path: 'login', component: LoginComponent },
       { path: 'new-league', component: CreateLeagueFormComponent },
-      { path: 'leagues', component: LeaguesDashboardComponent },
+      { path: 'leagues', component: LeaguesDashboardComponent, title: 'Ligas' },
       { path: 'league/:leagueId', component: LeagueMainComponent, children: [
         { path: 'overview', component: LeagueOverviewComponent },
         { path: 'members', component: LeagueMemberListComponent },

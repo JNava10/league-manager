@@ -4,6 +4,8 @@ import {LeagueService} from "../services/league.service";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import { isValidNumber } from "../helpers/validators.helper";
+import { League } from "@prisma/client";
+import { log } from "console";
 
 export const getLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -125,6 +127,30 @@ export const kickMember = async (req: CustomRequest, res: Response) => {
             executed,
             msg: "Se ha eliminado de la liga al miembro correctamente." 
         }
+
+        return res.status(200).send(data);
+    } catch (e) {
+        console.log(e);
+        
+        return res.status(500).send(e.message);
+    }
+}
+
+export const searchLeagues = async (req: CustomRequest, res: Response) => {
+    try {
+        const nameSearched = req.query['name'] as string;
+
+        let data: League[] = [];
+
+        console.log(nameSearched);
+        
+
+        if (nameSearched) {
+            data = await LeagueService.getLeaguesByName(nameSearched)
+        }
+
+        console.log(data);
+        
 
         return res.status(200).send(data);
     } catch (e) {
