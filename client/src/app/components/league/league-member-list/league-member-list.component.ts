@@ -13,11 +13,12 @@ import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { GlobalHelper } from '../../../helpers/global.helper';
 import { MessagesModule } from 'primeng/messages';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @Component({
   selector: 'app-league-member-list',
   standalone: true,
-  imports: [TableModule, AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe],
+  imports: [TableModule, AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe, TabMenuModule],
   templateUrl: './league-member-list.component.html',
   styleUrl: './league-member-list.component.css'
 })
@@ -42,10 +43,12 @@ export class LeagueMemberListComponent implements OnInit {
   $elegibleUsers?: Observable<User[]>
   $search?: Observable<User[]>
 
-  // Este timeout se creará cada vez que se utiliza el buscador de los usuarios.
-  // Esperará a que terminemos de escribir, y si se sigue escribiendo, se volverá a crear.
-  // Hay que tipar la variable si o si con any, al intentar utilizar el tipo NodeJS.Timeout da errores.
   searchTimeout?: any;
+
+  private memberTabs = [
+    {label: 'Miembros', icon: 'pi pi-fw pi-home'},
+    {label: 'Pendientes', icon: 'pi pi-fw pi-calendar'},
+];
 
   handleSearch = (originalEvent: ListboxFilterEvent) => {
     const value = String(originalEvent.filter);

@@ -176,3 +176,20 @@ export const requestToEnterLeague = async (req: CustomRequest, res: Response)  =
         return res.status(500).send(e.message);
     }
 }
+
+
+export const getPendingMembers = async (req: CustomRequest, res: Response)  => {
+    try {
+        const leagueId = Number(req.params['leagueId']);        
+
+        isValidNumber(req.params['id']);
+        
+        const data = await LeagueService.getPendingMembers(leagueId);
+        
+        return res.status(200).send(data);
+    } catch (e) {
+        console.log(e);
+        
+        return res.status(500).send(e.message);
+    }
+}
