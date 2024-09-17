@@ -165,7 +165,7 @@ export const requestToEnterLeague = async (req: CustomRequest, res: Response)  =
         const executed = await LeagueService.addPendingMember(req.user.id, leagueId);
 
         const data: IsQueryExecuted = {
-            executed: executed,
+            executed,
             msg: "Se ha enviado la petición de entrada a la liga correctamente." 
         }
         
@@ -186,6 +186,49 @@ export const getPendingMembers = async (req: CustomRequest, res: Response)  => {
         
         const data = await LeagueService.getPendingMembers(leagueId);
         
+        return res.status(200).send(data);
+    } catch (e) {
+        console.log(e);
+        
+        return res.status(500).send(e.message);
+    }
+}
+
+export const acceptMember = async (req: CustomRequest, res: Response)  => {
+    try {
+        const leagueId = Number(req.params['leagueId']); 
+        const userId = Number(req.body['userId']);
+
+        isValidNumber(req.params['id']);
+
+        const executed = await LeagueService.acceptPendingMember(userId, leagueId) !== null;
+        
+        const data: IsQueryExecuted = {
+            executed,
+            msg: "Se ha aceptado la entrada del usuario a la liga correctamente." 
+        }
+        return res.status(200).send(data);
+    } catch (e) {
+        console.log(e);
+        
+        return res.status(500).send(e.message);
+    }
+}
+
+export const denyMember = async (req: CustomRequest, res: Response)  => {
+    try {
+        const leagueId = Number(req.params['leagueId']); 
+        const userId = Number(req.body['userId']);
+
+        isValidNumber(req.params['id']);
+        
+        const executed = await LeagueService.declinePendingMember(userId, leagueId) !== null;
+        
+        const data: IsQueryExecuted = {
+            executed,
+            msg: "Se ha rechazado la entrada del usuario a la liga correctamente." 
+        }
+
         return res.status(200).send(data);
     } catch (e) {
         console.log(e);

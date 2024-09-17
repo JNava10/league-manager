@@ -47,4 +47,16 @@ export class LeagueApiService {
   sendEnterLeagueRequest = (leagueId: number) => {
     return this.http.post<QueryIsExecuted>(`${environment.apiEndpoint}/league/${leagueId}/enter/`, {}, {params: {...sendTokenParam}})
   }
+
+  getPendingMembers = (leagueId: number) => {
+    return this.http.get<User[]>(`${environment.apiEndpoint}/league/${leagueId}/pending/`, {params: {...sendTokenParam}})
+  }
+
+  acceptPendingMember = (leagueId: number, userId: number) => {
+    return this.http.post<QueryIsExecuted>(`${environment.apiEndpoint}/league/${leagueId}/pending/accept/`, {userId}, {params: {...sendTokenParam}})
+  }
+
+  declinePendingMember = (leagueId: number, userId: number) => {
+    return this.http.post<QueryIsExecuted>(`${environment.apiEndpoint}/league/${leagueId}/pending/decline/`, {userId}, {params: {...sendTokenParam}})
+  }
 }

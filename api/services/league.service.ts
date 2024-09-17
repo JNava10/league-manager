@@ -3,6 +3,7 @@ import {LeagueData} from "../utils/interfaces/league.interface";
 import {prisma} from "../app";
 import { now } from '../helpers/common.helper';
 import { UserService } from './user.service';
+import { User } from '@prisma/client';
 
 export class LeagueService {
     static createLeague = async (league: LeagueData, authorId: number) => {
@@ -48,9 +49,10 @@ export class LeagueService {
     }
 
     static getPendingMembers = async (leagueId: number) => {
-        const pendingMembers = await prisma.leagueMember.findMany({where: {leagueId, accepted: false}});
+        const pendingMembers = await prisma.leagueMember.findMany({where: {leagueId, accepted: false}, include: {user: true}});        
 
-        return pendingMembers;
+        // @ts-ignore
+        return pendingMembers.map(item => item.user);
     }
 
     static kickMember = async (userId: number, leagueId: number) => {
@@ -91,7 +93,7 @@ export class LeagueService {
         
         if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`)
 
-        return prisma.leagueMember.findMany({where: {leagueId}, include: {user: true}});
+        return prisma.leagueMember.findMany({where: {leagueId, accepted: true, joinedAt: {not: null}}, include: {user: true}});
     }
 
     static searchNotMembers = async (leagueId: number, search: string) => {
@@ -139,10 +141,32 @@ export class LeagueService {
         return prisma.league.findMany({where: {name: {contains: search}}});
     }
 
+    static acceptPendingMember = async (userId: number, leagueId: number) => {
+        const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
+        const userExists = await prisma.user.findUnique({where: {id: userId}}) !== null;
+        
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
+        if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
+     
+        return prisma.leagueMember.update({where: {memberKeys: {leagueId, userId}}, data: {accepted: true, joinedAt: now()}});
+    }
+
+    
+    static declinePendingMember = async (userId: number, leagueId: number) => {        
+        const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
+        const userExists = await prisma.user.findUnique({where: {id: userId}}) !== null;
+
+        console.log(userId, userExists);
+        
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
+        if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
+     
+        return prisma.leagueMember.delete({where: {memberKeys: {leagueId, userId}}});
+    }
+
+
     static getPublicLeagues = async () => {
         return prisma.league.findMany();
-        // TODO: Find leagues where private is false
-        // TODO: Pagination
     }
 
     // Validators //

@@ -2,6 +2,14 @@
   <h2 class="text-xl">{{league.name}}</h2>
   <h4 class="text-sm">{{league.description}}</h4>
 
-  <p-tabMenu [model]="items"></p-tabMenu>
-  <router-outlet></router-outlet>
+  <div>
+    <ul class="menu bg-base-200">
+      <li><a routerLink="overview">Inicio</a></li>
+      <li><a>Campeonatos y eventos</a></li>
+      <li><a routerLink="members">Miembros</a></li>
+      <li><a routerLink="pending">Solicitudes de entrada</a></li>
+    </ul>
+  
+    <router-outlet></router-outlet>
+  </div>
 }

@@ -6,6 +6,8 @@ import {LeagueMainComponent} from "./components/league/league-main/league-main.c
 import {LeagueOverviewComponent} from "./components/league/league-overview/league-overview.component";
 import {CreateChampionshipComponent} from "./components/championship/create-championship/create-championship.component";
 import { LeagueMemberListComponent } from './components/league/league-member-list/league-member-list.component';
+import { PendingMembersListComponent } from './components/league/pending-members-list/pending-members-list.component';
+import { LeagueMembersMainComponent } from './components/league/league-members-main/league-members-main.component';
 
 export const routes: Routes = [
   { path: 'lm', children: [
@@ -13,8 +15,10 @@ export const routes: Routes = [
       { path: 'new-league', component: CreateLeagueFormComponent },
       { path: 'leagues', component: LeaguesDashboardComponent, title: 'Ligas' },
       { path: 'league/:leagueId', component: LeagueMainComponent, children: [
+        { path: '', redirectTo: 'overview', pathMatch: 'full' },
         { path: 'overview', component: LeagueOverviewComponent },
         { path: 'members', component: LeagueMemberListComponent },
+        { path: 'pending', component: PendingMembersListComponent },
       ] 
     },
       { component: CreateChampionshipComponent, path: 'create-championship' },

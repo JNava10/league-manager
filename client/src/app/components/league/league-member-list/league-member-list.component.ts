@@ -10,7 +10,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { User } from '../../../utils/interfaces/user.interface';
 import { ListboxClickEvent, ListboxFilterEvent, ListboxModule } from 'primeng/listbox';
 import { FormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { GlobalHelper } from '../../../helpers/global.helper';
 import { MessagesModule } from 'primeng/messages';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -18,7 +18,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 @Component({
   selector: 'app-league-member-list',
   standalone: true,
-  imports: [TableModule, AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe, TabMenuModule],
+  imports: [TableModule, AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe],
   templateUrl: './league-member-list.component.html',
   styleUrl: './league-member-list.component.css'
 })
@@ -29,7 +29,6 @@ export class LeagueMemberListComponent implements OnInit {
     private messageService: MessageService,
     private globalHelper: GlobalHelper
   ) {}
-
 
   ngOnInit(): void {
     if (!this.leagueId) this.leagueId = this.route.snapshot.parent?.params['leagueId'];
@@ -44,11 +43,6 @@ export class LeagueMemberListComponent implements OnInit {
   $search?: Observable<User[]>
 
   searchTimeout?: any;
-
-  private memberTabs = [
-    {label: 'Miembros', icon: 'pi pi-fw pi-home'},
-    {label: 'Pendientes', icon: 'pi pi-fw pi-calendar'},
-];
 
   handleSearch = (originalEvent: ListboxFilterEvent) => {
     const value = String(originalEvent.filter);
