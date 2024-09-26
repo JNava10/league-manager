@@ -14,6 +14,7 @@ import {Category} from "../../../utils/interfaces/category.interface";
 import {ScoreSystem} from "../../../utils/interfaces/score.interface";
 import {DropdownModule} from "primeng/dropdown";
 import {AccordionModule} from "primeng/accordion";
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-create-championship',
@@ -23,7 +24,8 @@ import {AccordionModule} from "primeng/accordion";
     ReactiveFormsModule,
     DropdownModule,
     AsyncPipe,
-    AccordionModule
+    AccordionModule,
+    DialogModule
   ],
   templateUrl: './create-championship.component.html',
   styleUrl: './create-championship.component.css'
@@ -62,6 +64,9 @@ export class CreateChampionshipComponent implements OnInit {
   raceCalendar: Map<number, Track> = new Map();
   addingRace: boolean = false
 
+  // Creando una ronda
+  roundTrackSelected?: Track;
+
   get name() {
     return this.createChampionshipForm.get('name')!;
   }
@@ -87,7 +92,7 @@ export class CreateChampionshipComponent implements OnInit {
 
   };
 
-  addRace = (track: Track) => {
-    this.raceCalendar.set(this.raceCalendar.size + 1, track)
+  selectRoundTrack = (track: Track) => {
+    this.roundTrackSelected = track
   }
 }

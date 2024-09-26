@@ -1,9 +1,9 @@
 
-<p-accordion [activeIndex]="0">
-  <p-accordionTab header="Basic info">
+<p-accordion styleClass="border-none" [activeIndex]="0">
+  <p-accordionTab headerStyleClass="dark:bg-neutral border-none dark:text-gray-400" contentStyleClass="dark:bg-base-100 border-none dark:text-gray-300" header="Información basica">
     <form (submit)="createChampionship()" class="flex flex-col gap-2" #form="ngForm" [formGroup]="createChampionshipForm">
       <div class="mb-5">
-        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
         <input formControlName="name" type="text" class="bg-gray-50 outline-none border border-gray-300 focus:border-indigo-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-200 dark:border-gray-700 ">
         @if (form.touched && form.invalid) {
           <label *ngIf="name.errors" class="text-sm text-red-600 dark:text-red-400">
@@ -13,7 +13,7 @@
       </div>
 
       <div class="mb-5">
-        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
         <input formControlName="description" type="text" class="bg-gray-50 outline-none border border-gray-300 focus:border-indigo-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-200 dark:border-gray-700 ">
         @if (form.touched && form.invalid) {
           <label *ngIf="description.errors" class="text-sm text-red-600 dark:text-red-400">
@@ -24,7 +24,7 @@
 
       <section class="flex gap-4">
         <div>
-          <h3>Category</h3>
+          <h3>Categoria</h3>
           <select formControlName="categoryId">
             @for (category of categories$ | async; track category.id)  {
               <optgroup label="{{category.name}}"></optgroup>
@@ -35,7 +35,7 @@
           </select>
         </div>
         <div>
-          <h3>Score system</h3>
+          <h3>Sistema de puntuación</h3>
           <select formControlName="scoreSystemId">
             @for (score of scoreSystems$ | async; track score.id)  {
               <option value="{{score.id}}">{{score.name}}</option>
@@ -46,49 +46,70 @@
 
     </form>
   </p-accordionTab>
-  <p-accordionTab header="Race calendar">
-    @if (raceCalendar.size > 0) {
-      <div class="flex gap-4 overflow-x-scroll">
-        @for (track of raceCalendar.values(); track $index) {
-          <div class="relative flex flex-col mt-6 bg-white shadow-sm border border-slate-200 rounded-lg w-96">
-            <div class="mx-3 mb-0 border-b border-slate-200 pt-3 pb-2 px-1">
-      <span class="text-sm text-slate-500">
-          Race {{$index + 1}}
-      </span>
-            </div>
-            <div class="p-4 flex gap-3">
-              <h5 class="mb-2 text-slate-800 text-xl font-semibold">
-                {{track.name}}
-              </h5>
-              <h3>{{track.country}}</h3>
-            </div>
+  <p-accordionTab header="Calendarío">
+    <div class="flex gap-4 overflow-x-scroll">
+      @for (track of raceCalendar.values(); track $index) {
+        <div class="relative flex flex-col mt-6 bg-white shadow-sm border border-slate-200 rounded-lg w-96">
+          <div class="mx-3 mb-0 border-b border-slate-200 pt-3 pb-2 px-1">
+            <span class="text-sm text-slate-500">
+                Race {{$index + 1}}
+            </span>
           </div>
-        }
-      </div>
-    }
+          <div class="p-4 flex gap-3">
+            <h5 class="mb-2 text-slate-800 text-xl font-semibold">
+              {{track.name}}
+            </h5>
+            <h3>{{track.country}}</h3>
+          </div>
+        </div>
+      } @empty {
+        <p>Se debe añadir una carrera obligatoriamente.</p>
+      }
+    </div>
 
-    @if (!addingRace) {
-      <button (focusin)="addingRace = true" (focusout)="addingRace = false" class="flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg p-3">
-        <div class="flex gap-3">
-          <h5 class="text-slate-800 text-xl font-semibold">
-            Add race
-          </h5>
+    <p-dialog styleClass="flex gap-1" [(visible)]="addingRace" modal="true" dismissableMask="true">
+      <div>
+        <div>
+          Circuito seleccionado
+          <div class="card dark:bg-base-100 image-full w-96 shadow-xl">
+            <div class="card-body">
+              @if (roundTrackSelected) {
+                <h2 class="card-title">{{roundTrackSelected.name}}</h2>
+                <p>{{roundTrackSelected.country}}</p>
+              } @else {
+                <p>No se ha indicado ningun circuito</p>
+              }
+            </div>
+          </div>
         </div>
-      </button>
-    } @else {
-      <div class="flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg p-3">
-        <div class="relative flex flex-col text-gray-700 bg-white shadow-md w-96 rounded-xl bg-clip-border">
-          <div class="flex min-w-[240px] max-h-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700 overflow-scroll">
-            @for (track of tracks$ | async; track track.id) {
-              <div role="button" (click)="addRace(track)"
-                   class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
-                {{track.name}}
+        <div>
+          <h2>Circuitos</h2>
+          <div class="flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg p-3">
+            <div class="relative flex flex-col text-gray-700 bg-white shadow-md w-96 rounded-xl bg-clip-border">
+              <div class="flex min-w-[240px] max-h-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700 overflow-scroll">
+                @for (track of tracks$ | async; track track.id) {
+                  <div role="button" (click)="selectRoundTrack(track)"
+                      class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+                    {{track.name}}
+                  </div>
+                }
               </div>
-            }
+            </div>
           </div>
         </div>
       </div>
-    }
+
+      <div>
+      </div>
+    </p-dialog>
+
+    <button (click)="addingRace = true" class="flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg p-3">
+      <div class="flex gap-3">
+        <h5 class="text-slate-800 text-xl font-semibold">
+          Añadir carrera
+        </h5>
+      </div>
+    </button>
   </p-accordionTab>
 </p-accordion>
 

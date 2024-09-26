@@ -19,9 +19,11 @@ export const routes: Routes = [
         { path: 'overview', component: LeagueOverviewComponent },
         { path: 'members', component: LeagueMemberListComponent },
         { path: 'pending', component: PendingMembersListComponent },
+        { path: 'championships', children: [
+          { component: CreateChampionshipComponent, path: 'new' },
+        ] },
       ] 
     },
-      { component: CreateChampionshipComponent, path: 'create-championship' },
     ]
   },
 ];
